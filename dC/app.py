@@ -19,7 +19,7 @@ class RegexConverter(BaseConverter):
 app = Flask(__name__)
 app.url_map.converters['re'] = RegexConverter
 app.config['SECRET_KEY'] = '123456'  # 密码
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@163.221.29.17:3306/test'  # Tencent Cloud
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:xxxxxx@163.221.29.17:xxxx/test'  # lab Cloud
 
 # db
 database = None
