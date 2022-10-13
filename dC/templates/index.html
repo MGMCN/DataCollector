@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <meta charset="UTF-8">
+    <title>Nodes DashBoard</title>
+</head>
+<body>
+    <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/P2P-network.svg.png') }}">
+    <h2>Node List</h2>
+    {# 使用 length 过滤器获取 nodes 变量的长度 #}
+    <p>Now we have {{ nodes|length }} nodes online!</p>
+    <ul class="list">
+        {% for node in nodes %}  {# 迭代 nodes 变量 #}
+        <li><a href={{ node.name }}>{{ node.name }}</a></li>  {# 等同于 nodes['name'] #}
+        {% endfor %}  {# 使用 endfor 标签结束 for 语句#}
+    </ul>
+    <img alt="Walking Totoro" class="movingGif" src="{{ url_for('static', filename='images/totoro.gif') }}">
+    <footer>
+        <small>&copy; 2022 <a>Flask</a></small>
+    </footer>
+</body>
+</html>

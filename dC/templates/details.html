@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <meta charset="UTF-8">
+    <title>{{nodeName}}</title>
+</head>
+<body>
+    <img alt="Avatar" class="avatar" src="{{ url_for('static', filename='images/P2P-network.svg.png') }}">
+    <h2>datasets</h2>
+    {# 使用 length 过滤器获取 datasets 变量的长度 #}
+    <p>We now have {{ datasets|length }} types of data</p>
+    <ul class="list">
+        {# 遍历datasets字典 #}
+        {% for k,v in datasets.items() %}
+{#            <li>{{ k }}:{{ v }}</li>#}
+            <li>{{ k }}
+                <canvas id={{ k }} height="330px" width="950px"> </canvas>  <!--折线图位置-->
+
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!--导入jQuery-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script> <!--导入jQuery-->
+                <script>
+                    $(function () {
+                        var can = $('#{{ k }}').get(0).getContext('2d'); /*绘制类型*/
+                        //定义图标的数据
+                        var canData = {
+                            labels:["0","0","0","0","0","0","0","0","0","0"], /*初始x轴数据*/
+                            datasets : [
+                                {
+                                    //折线的填充颜色
+                                    fillColor:"rgba(255,255,255,0.1)",
+                                    //线条颜色：
+                                    strokeColor:"rgba(0,255,0,1)",
+                                    //y轴初始数据：
+                                    data:[0,0,0,0,0,0,0,0,0,0],
+                                }
+                            ],
+
+                        };
+                        //绘制图片
+                        var line = new Chart(can).Line(canData);
+                        var input = {
+                            'node': '{{ nodeName }}',
+                            'key': '{{ k }}',
+                        };
+                        var int = setInterval(function () {  //设置定时器
+                           $.ajax(
+                               {
+                                   url: '/setData/',
+                                   type: 'post',
+                                   contentType: 'application/json',
+                                   data: JSON.stringify(input),
+                                   success: function (res) {
+                                        //console.log(res);
+                                        line.addData(
+                                           [res["data"]], //y轴，因为同一个x轴可以有多个折线
+                                            res["time"]  //x轴
+                                        );
+                                        //保持x轴只有30个数据，要不随着时间推移x轴会越来越长
+                                        var len = line.datasets[0].points.length;
+                                        if(len>30){
+                                            line.removeData()
+                                        }
+                                   }
+                               }
+                           )
+                        },1000)
+                    })
+
+                </script>
+            </li>
+        {% endfor %}
+    </ul>
+    <img alt="Walking Totoro" class="movingGif" src="{{ url_for('static', filename='images/totoro.gif') }}">
+    <footer>
+        <small>&copy; 2022 <a>Flask</a></small>
+    </footer>
+</body>
+</html>
