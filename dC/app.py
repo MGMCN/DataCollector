@@ -59,11 +59,27 @@ def details(path):
 @app.route('/setData/', methods=['POST'])
 def setData():
     json = request.json
-    print('recv :', json['node'], json['key'])
+    # print('recv :', json['node'], json['key'])
 
     now = datetime.datetime.now().strftime('%H:%M:%S')
     data = {'time': now, 'data': random.randint(1, 10)}
     return jsonify(data)  # 将数据以字典的形式传回
+
+
+# 接受节点上传的数据
+@app.route('/postData/', methods=['POST'])
+def postData():
+    json = request.json
+
+    node = json['node']
+    datasets = json['datasets']
+
+    print('recv :', node)  # datasets : {}
+    for data_type in datasets:
+        print(data_type, datasets[data_type])
+
+    return "post succeed!"
+    # store data
 
 
 # db Operation
