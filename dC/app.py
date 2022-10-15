@@ -67,28 +67,28 @@ def setData():
 
 
 # db Operation
-def addData():
-    with app.app_context():
-        testdata = RunTimeData(nodeName="testNode1", cpuUtilization=0.1, gpuUtilization=0.1, time='2022/10/13')
-        database.session.add(testdata)
-        database.session.commit()
+# def addData():
+#     with app.app_context():
+#         testdata = RunTimeData(nodeName="testNode1", cpuUtilization=0.1, gpuUtilization=0.1, time='2022/10/13')
+#         database.session.add(testdata)
+#         database.session.commit()
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db = SQLAlchemy(app)
-
-
-        class RunTimeData(db.Model):  # 这样抽象的数据组织方式也是服了自己了
-            id = db.Column(db.Integer, primary_key=True)  # id字段，int类型，主键
-            nodeName = db.Column(db.String(9))
-            cpuUtilization = db.Column(db.Float)
-            gpuUtilization = db.Column(db.Float)
-            time = db.Column(db.String(20))
-
-
-        database = db
-        # db.drop_all()
-        # db.create_all()
-    addData()
+    # with app.app_context():
+    #     db = SQLAlchemy(app)
+    #
+    #
+    #     class RunTimeData(db.Model):  # 这样抽象的数据组织方式也是服了自己了
+    #         id = db.Column(db.Integer, primary_key=True)  # id字段，int类型，主键
+    #         nodeName = db.Column(db.String(9))
+    #         cpuUtilization = db.Column(db.Float)
+    #         gpuUtilization = db.Column(db.Float)
+    #         time = db.Column(db.String(20))
+    #
+    #
+    #     database = db
+    #     database.drop_all()
+    #     database.create_all()
+    # addData()
     app.run()
